@@ -7,32 +7,46 @@ export default function PinLock({ onUnlock }) {
   const [shake, setShake] = useState(false);
 
   function press(val) {
-    if (val === 'del') {
-      setBuf(b => b.slice(0, -1));
-      return;
+    // Light haptic feedback if available on device
+    if (typeof navigator !== 'undefined' && navigator.vibrate) {
+      navigator.vibrate(15);
     }
-    if (val === 'clr') { setBuf(''); return; }
-    if (buf.length >= 4) return;
 
-    const next = buf + val;
-    setBuf(next);
+    setError('');
+    setBuf(prev => {
+      if (val === 'del') {
+        return prev.slice(0, -1);
+      }
+      if (val === 'clr') {
+        return '';
+      }
+      if (prev.length >= 4) return prev;
 
-    if (next.length === 4) {
-      setTimeout(() => {
+      const next = prev + val;
+      
+      if (next.length === 4) {
         if (next === PIN) {
-          setBuf('');
-          onUnlock();
+          // Unlock immediately with a tiny delay so they see the final dot fill
+          setTimeout(() => {
+            onUnlock();
+            setBuf('');
+          }, 60);
         } else {
-          setBuf('');
-          setError('❌ Incorrect PIN. Try again.');
-          setShake(true);
-          setTimeout(() => { setError(''); setShake(false); }, 2000);
+          // Trigger shake and clear buffer on mismatch
+          setTimeout(() => {
+            setBuf('');
+            setError('❌ Incorrect PIN. Try again.');
+            setShake(true);
+            setTimeout(() => setShake(false), 500);
+          }, 100);
         }
-      }, 180);
-    }
+      }
+      return next;
+    });
   }
 
   const keys = ['1','2','3','4','5','6','7','8','9','clr','0','del'];
+
 
   return (
     <div className="pin-overlay">

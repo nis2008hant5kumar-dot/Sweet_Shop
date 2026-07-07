@@ -432,13 +432,22 @@ footer span { color: var(--gold); }
 .pin-key {
   background: var(--cream); border: 2px solid rgba(240,165,0,0.25);
   border-radius: 12px; padding: 0.9rem; font-size: 1.15rem;
-  font-weight: 700; cursor: pointer; transition: var(--transition);
+  font-weight: 700; cursor: pointer;
+  transition: transform 0.05s ease-out, background-color 0.1s ease, border-color 0.1s ease;
   color: var(--dark); font-family: 'Poppins', sans-serif;
+  touch-action: manipulation;
+  -webkit-tap-highlight-color: transparent;
 }
-.pin-key:hover  { background: var(--gold); color: #fff; border-color: var(--gold); transform: scale(1.06); }
-.pin-key:active { transform: scale(0.94); }
+@media (hover: hover) {
+  .pin-key:hover  { background: var(--gold); color: #fff; border-color: var(--gold); transform: scale(1.04); }
+}
+.pin-key:active { transform: scale(0.92); background: var(--gold) !important; color: #fff !important; border-color: var(--gold) !important; }
 .pin-key.del    { background: #fee2e2; border-color: #fca5a5; color: var(--deep-red); }
-.pin-key.del:hover { background: var(--deep-red); color: #fff; }
+@media (hover: hover) {
+  .pin-key.del:hover { background: var(--deep-red); color: #fff; border-color: var(--deep-red); }
+}
+.pin-key.del:active { background: var(--deep-red) !important; color: #fff !important; border-color: var(--deep-red) !important; }
+
 
 .pin-error {
   color: var(--deep-red); font-size: 0.8rem; margin-top: 0.75rem;
