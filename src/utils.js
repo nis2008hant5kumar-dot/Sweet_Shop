@@ -58,6 +58,17 @@ export const PRICES = {
   gulabjamun_piece: 12,
   samosa_piece:     10,
   sweets_kg:        250,   // ₹250 per kg for both rasogula & gulabjamun
+  boondi_laddu_piece: 10,
+  boondi_laddu_kg:    220,
+  motichoor_laddu_piece: 12,
+  motichoor_laddu_kg:    260,
+  besan_laddu_piece:  12,
+  besan_laddu_kg:     240,
+  cham_cham_piece:    14,
+  cham_cham_kg:       280,
+  namkeen_paara_kg:   180,
+  milk_cake_piece:    15,
+  milk_cake_kg:       380,
 };
 
 export const PIN = '1234';

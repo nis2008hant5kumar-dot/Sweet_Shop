@@ -1,3 +1,5 @@
+import { PRICES } from '../utils.js';
+
 export default function Home() {
   return (
     <>
@@ -25,8 +27,8 @@ export default function Home() {
             badge="🍬 Sweet"
             name="Rasogula"
             desc="Soft, spongy cottage cheese balls soaked in delicate sugar syrup. A timeless Indian classic that melts in your mouth."
-            piecePrice={12}
-            kgPrice={250}
+            piecePrice={PRICES.rasogula_piece}
+            kgPrice={PRICES.sweets_kg}
           />
           <ProductCard
             img="/gulabjamun.png"
@@ -34,8 +36,8 @@ export default function Home() {
             badge="🟤 Sweet"
             name="Gulabjamun"
             desc="Rich golden-brown milk dumplings soaked in rose-flavored sugar syrup, garnished with cardamom. Pure indulgence."
-            piecePrice={12}
-            kgPrice={250}
+            piecePrice={PRICES.gulabjamun_piece}
+            kgPrice={PRICES.sweets_kg}
           />
           <ProductCard
             img="/samosa.png"
@@ -43,8 +45,62 @@ export default function Home() {
             badge="🔺 Snack"
             name="Samosa"
             desc="Crispy golden pastry shell filled with perfectly spiced potatoes and peas. Best enjoyed with our homemade chutneys."
-            piecePrice={10}
+            piecePrice={PRICES.samosa_piece}
             kgPrice={null}
+          />
+          <ProductCard
+            img="/boondi_laddu.png"
+            alt="Boondi Laddu"
+            badge="🟡 Sweet"
+            name="Boondi Laddu"
+            desc="Golden pearls of gram flour fried to perfection, dipped in flavored sugar syrup, and shaped into delicious traditional laddus."
+            piecePrice={PRICES.boondi_laddu_piece}
+            kgPrice={PRICES.boondi_laddu_kg}
+          />
+          <ProductCard
+            img="/motichoor_laddu.png"
+            alt="Motichoor Laddu"
+            badge="🟡 Sweet"
+            name="Motichoor Laddu"
+            desc="Made with extremely fine gram flour droplets, cooked in pure ghee, and blended with cardamom and melon seeds."
+            piecePrice={PRICES.motichoor_laddu_piece}
+            kgPrice={PRICES.motichoor_laddu_kg}
+          />
+          <ProductCard
+            img="/besan_laddu.png"
+            alt="Besan Laddu"
+            badge="🟡 Sweet"
+            name="Besan Laddu"
+            desc="Rich, aromatic laddus made by slow-roasting gram flour in pure ghee, sweetened, and topped with chopped nuts."
+            piecePrice={PRICES.besan_laddu_piece}
+            kgPrice={PRICES.besan_laddu_kg}
+          />
+          <ProductCard
+            img="/cham_cham.png"
+            alt="Cham Cham Sweet"
+            badge="🍬 Sweet"
+            name="Cham Cham"
+            desc="Soft, oblong paneer dumplings cooked in sugar syrup, coated with desiccated coconut, and filled with rich mawa."
+            piecePrice={PRICES.cham_cham_piece}
+            kgPrice={PRICES.cham_cham_kg}
+          />
+          <ProductCard
+            img="/namkeen_paara.png"
+            alt="Namkeen Paara"
+            badge="🔺 Snack"
+            name="Namkeen Paara"
+            desc="Crispy, crunchy, and savory diamond-cut crackers seasoned with ajwain (carom seeds). The perfect companion for tea."
+            piecePrice={null}
+            kgPrice={PRICES.namkeen_paara_kg}
+          />
+          <ProductCard
+            img="/milk_cake.png"
+            alt="Milk Cake"
+            badge="🥛 Sweet"
+            name="Milk Cake"
+            desc="A rich, grain-textured sweet made of condensed milk, slow-cooked until caramelized to a perfect white and brown gradient."
+            piecePrice={PRICES.milk_cake_piece}
+            kgPrice={PRICES.milk_cake_kg}
           />
         </div>
       </section>
@@ -78,11 +134,15 @@ function ProductCard({ img, alt, badge, name, desc, piecePrice, kgPrice }) {
         <h3 className="product-name">{name}</h3>
         <p className="product-desc">{desc}</p>
         <div className="product-price">
-          <span className="price-tag">₹{piecePrice}</span>
-          <span className="price-unit">per piece</span>
+          {piecePrice && (
+            <>
+              <span className="price-tag">₹{piecePrice}</span>
+              <span className="price-unit">per piece</span>
+            </>
+          )}
+          {piecePrice && kgPrice && <span className="price-divider">|</span>}
           {kgPrice && (
             <>
-              <span className="price-divider">|</span>
               <span className="price-tag">₹{kgPrice}</span>
               <span className="price-unit">per kg</span>
             </>
