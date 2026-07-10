@@ -14,8 +14,49 @@ export const DB = {
   },
   remove: (key, id) => {
     DB.set(key, DB.get(key).filter(i => i.id !== id));
-  }
+  },
+  update: (key, id, changes) => {
+    const arr = DB.get(key).map(i => i.id === id ? { ...i, ...changes } : i);
+    DB.set(key, arr);
+  },
 };
+
+// ─── Customer Auth Helpers ────────────────────────────────────
+export const CustomerAuth = {
+  getAll: () => {
+    try { return JSON.parse(localStorage.getItem('shreeRam_customers') || '[]'); }
+    catch { return []; }
+  },
+  save: (customers) => localStorage.setItem('shreeRam_customers', JSON.stringify(customers)),
+  getCurrent: () => {
+    try { return JSON.parse(localStorage.getItem('shreeRam_currentCustomer') || 'null'); }
+    catch { return null; }
+  },
+  setCurrent: (c) => localStorage.setItem('shreeRam_currentCustomer', JSON.stringify(c)),
+  logout: () => localStorage.removeItem('shreeRam_currentCustomer'),
+  register: (name, phone, password) => {
+    const all = CustomerAuth.getAll();
+    if (all.find(c => c.phone === phone)) return { ok: false, msg: 'Phone number already registered.' };
+    const customer = { id: Date.now(), name, phone, password };
+    all.push(customer);
+    CustomerAuth.save(all);
+    CustomerAuth.setCurrent({ id: customer.id, name, phone });
+    return { ok: true, customer };
+  },
+  login: (phone, password) => {
+    const all = CustomerAuth.getAll();
+    const found = all.find(c => c.phone === phone && c.password === password);
+    if (!found) return { ok: false, msg: 'Invalid phone or password.' };
+    CustomerAuth.setCurrent({ id: found.id, name: found.name, phone: found.phone });
+    return { ok: true, customer: found };
+  },
+};
+
+// ─── Order Event (notify seller tab) ─────────────────────────
+export function dispatchOrderEvent() {
+  // Touch the key so storage event fires even in same tab via custom event
+  window.dispatchEvent(new CustomEvent('shreeRamNewOrder'));
+}
 
 // ─── 6-Month Filter ───────────────────────────────────────────
 export function within6Months(records) {
