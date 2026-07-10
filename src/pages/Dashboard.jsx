@@ -60,7 +60,7 @@ export default function Dashboard({ showToast, onExit }) {
         </button>
       </nav>
 
-      {activeTab === 'orders'  && <OrdersTab />}
+      {activeTab === 'orders'  && <OrdersTab showToast={showToast} />}
       {activeTab === 'sales'   && <SalesTab   showToast={showToast} />}
       {activeTab === 'milk'    && <MilkTab    showToast={showToast} />}
       {activeTab === 'oil'     && <OilTab     showToast={showToast} />}

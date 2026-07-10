@@ -138,7 +138,11 @@ export default function SalesTab({ showToast }) {
                         {new Date(r.date + 'T00:00:00').toLocaleDateString('en-IN', { weekday: 'short' })}
                       </td>
                       <td className="td-green" style={{ fontSize: '1rem' }}>{fmt(r.earning)}</td>
-                      <td style={{ color: '#888', fontSize: '0.82rem' }}>{r.note || '—'}</td>
+                      <td style={{ color: '#888', fontSize: '0.82rem' }}>
+                        {r.source === 'order'
+                          ? <span title={r.note}><span style={{ background:'#e8f5e9', color:'#2e7d32', borderRadius:'4px', padding:'0.1rem 0.35rem', fontSize:'0.7rem', fontWeight:700, marginRight:'0.3rem' }}>🛒 Auto</span>{r.note}</span>
+                          : r.note || '—'}
+                      </td>
                       <td>
                         <button
                           className="btn btn-danger btn-sm"

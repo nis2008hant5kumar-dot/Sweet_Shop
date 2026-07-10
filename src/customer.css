@@ -1,0 +1,588 @@
+/* ================================================================
+   CUSTOMER EXPERIENCE — ZOMATO-STYLE
+   Shree Ram Misthan Bhandar
+   ================================================================ */
+
+/* ─── App Shell ─── */
+.z-app {
+  background: #f4f4f4;
+  min-height: calc(100vh - var(--navbar-h));
+  font-family: 'Poppins', sans-serif;
+}
+
+/* ─── Restaurant Banner ─── */
+.z-banner {
+  position: relative;
+  background: linear-gradient(160deg, #4a0000 0%, #8B0000 40%, #C0392B 72%, #FF6B35 100%);
+  overflow: hidden;
+}
+.z-banner-overlay {
+  position: absolute; inset: 0;
+  background: url("data:image/svg+xml,%3Csvg width='60' height='60' viewBox='0 0 60 60' xmlns='http://www.w3.org/2000/svg'%3E%3Cg fill='%23ffffff' fill-opacity='0.04'%3E%3Cpath d='M36 34v-4h-2v4h-4v2h4v4h2v-4h4v-2h-4zm0-30V0h-2v4h-4v2h4v4h2V6h4V4h-4zM6 34v-4H4v4H0v2h4v4h2v-4h4v-2H6zM6 4V0H4v4H0v2h4v4h2V6h4V4H6z'/%3E%3C/g%3E%3C/svg%3E");
+  pointer-events: none;
+}
+.z-banner-content {
+  position: relative; z-index: 1;
+  padding: 1.75rem 1.25rem 0.75rem;
+  color: #fff;
+}
+.z-banner-emoji {
+  font-size: 2.5rem; display: block; margin-bottom: 0.45rem;
+  filter: drop-shadow(0 4px 14px rgba(0,0,0,0.35));
+}
+.z-banner-name {
+  font-family: 'Playfair Display', serif;
+  font-size: clamp(1.2rem, 4vw, 1.7rem);
+  font-weight: 900; color: #F5C842;
+  margin-bottom: 0.65rem; line-height: 1.2;
+}
+.z-banner-tags {
+  display: flex; flex-wrap: wrap; gap: 0.4rem; margin-bottom: 0.6rem;
+}
+.z-btag {
+  font-size: 0.71rem; padding: 0.2rem 0.65rem;
+  background: rgba(255,255,255,0.15);
+  border: 1px solid rgba(255,255,255,0.25);
+  border-radius: 50px; color: rgba(255,255,255,0.92);
+  backdrop-filter: blur(4px);
+}
+.z-banner-meta {
+  display: flex; align-items: center; gap: 0.45rem; flex-wrap: wrap;
+  font-size: 0.79rem; color: rgba(255,255,255,0.8); font-weight: 500;
+}
+.z-meta-dot { opacity: 0.4; }
+.z-banner-info-row {
+  display: flex; align-items: center; gap: 1.25rem;
+  padding: 0.75rem 1.25rem 1rem;
+  position: relative; z-index: 1;
+}
+.z-info-chip {
+  display: flex; flex-direction: column; align-items: center; gap: 0.15rem;
+  background: rgba(255,255,255,0.12); backdrop-filter: blur(8px);
+  border: 1px solid rgba(255,255,255,0.2); border-radius: 10px;
+  padding: 0.5rem 0.9rem; min-width: 68px;
+}
+.z-ic-val { font-size: 0.88rem; font-weight: 800; color: #fff; }
+.z-ic-lbl { font-size: 0.62rem; color: rgba(255,255,255,0.65); font-weight: 500; text-transform: uppercase; letter-spacing: 0.4px; }
+.z-banner-welcome {
+  position: relative; z-index: 1;
+  display: flex; align-items: center; gap: 0.4rem;
+  padding: 0 1.25rem 1.25rem;
+  font-size: 0.81rem; color: rgba(255,255,255,0.72);
+}
+.z-banner-welcome strong { color: #fff; }
+
+/* ─── Sticky Search + Category ─── */
+.z-sticky-top {
+  position: sticky; top: var(--navbar-h); z-index: 300;
+  background: #fff; border-bottom: 1px solid #efefef;
+  box-shadow: 0 2px 14px rgba(0,0,0,0.06);
+}
+.z-search-bar {
+  display: flex; align-items: center; gap: 0.5rem;
+  padding: 0.7rem 1rem; border-bottom: 1px solid #f5f5f5;
+}
+.z-si { font-size: 0.95rem; color: #bbb; flex-shrink: 0; }
+.z-search-in {
+  flex: 1; border: none; outline: none; background: transparent;
+  font-family: 'Poppins', sans-serif; font-size: 0.87rem; color: #333;
+}
+.z-search-in::placeholder { color: #c5c5c5; }
+.z-s-clear {
+  background: #f0f0f0; border: none; border-radius: 50%;
+  width: 22px; height: 22px; display: flex; align-items: center;
+  justify-content: center; cursor: pointer; font-size: 0.68rem; color: #666;
+  transition: background 0.15s;
+}
+.z-s-clear:hover { background: #e0e0e0; }
+.z-cat-row {
+  display: flex; overflow-x: auto; padding: 0 0.5rem;
+  scrollbar-width: none;
+}
+.z-cat-row::-webkit-scrollbar { display: none; }
+.z-cat-btn {
+  flex-shrink: 0; padding: 0.65rem 1.1rem;
+  background: none; border: none; border-bottom: 3px solid transparent;
+  font-family: 'Poppins', sans-serif; font-size: 0.82rem; font-weight: 600;
+  color: #888; cursor: pointer; transition: all 0.2s; white-space: nowrap;
+}
+.z-cat-btn.on { color: #C0392B; border-bottom-color: #C0392B; }
+
+/* ─── Menu Item ─── */
+.z-menu-wrap { background: #f4f4f4; }
+.z-menu-section-hd {
+  font-size: 0.78rem; font-weight: 700; color: #999;
+  letter-spacing: 0.5px; text-transform: uppercase;
+  padding: 1rem 1.25rem 0.4rem; background: #f4f4f4;
+}
+.z-menu-item {
+  display: flex; justify-content: space-between; align-items: flex-start;
+  gap: 0.9rem; padding: 1.1rem 1.25rem;
+  background: #fff; border-bottom: 1px solid #f5f5f5;
+  transition: background 0.12s;
+}
+.z-menu-item:active { background: #fffaf8; }
+.z-item-left {
+  flex: 1; display: flex; flex-direction: column; gap: 0.32rem; min-width: 0;
+}
+.z-item-name { font-size: 0.96rem; font-weight: 700; color: #1c1c1c; }
+.z-item-price {
+  font-size: 0.9rem; font-weight: 700; color: #3d3d3d;
+  display: flex; align-items: baseline; gap: 0.25rem; flex-wrap: wrap;
+}
+.z-price-unit { font-size: 0.7rem; color: #aaa; font-weight: 400; }
+.z-item-desc { font-size: 0.75rem; color: #8a8a8a; line-height: 1.55; }
+.z-unit-pills { display: flex; gap: 0.3rem; margin-top: 0.35rem; }
+.z-unit-pill {
+  padding: 0.18rem 0.55rem; border-radius: 50px;
+  border: 1.5px solid #ddd; background: transparent;
+  font-size: 0.67rem; font-weight: 700; color: #666;
+  cursor: pointer; font-family: 'Poppins', sans-serif; transition: all 0.15s;
+  -webkit-tap-highlight-color: transparent;
+}
+.z-unit-pill.active { border-color: #C0392B; color: #C0392B; background: #fff5f5; }
+.z-item-right {
+  display: flex; flex-direction: column; align-items: center;
+  gap: 0.55rem; flex-shrink: 0;
+}
+.z-item-img {
+  width: 96px; height: 78px; border-radius: 10px;
+  object-fit: cover; background: #f5ece0;
+  border: 1px solid #f0e6d6; display: block;
+}
+
+/* ─── ADD button ─── */
+.z-add-btn {
+  width: 96px; padding: 0.43rem 0;
+  background: #fff; border: 1.5px solid #C0392B; color: #C0392B;
+  border-radius: 8px; font-family: 'Poppins', sans-serif;
+  font-size: 0.82rem; font-weight: 800; cursor: pointer;
+  letter-spacing: 0.5px; transition: all 0.15s;
+  box-shadow: 0 2px 8px rgba(192,57,43,0.12);
+  -webkit-tap-highlight-color: transparent;
+}
+.z-add-btn:hover  { background: #C0392B; color: #fff; }
+.z-add-btn:active { transform: scale(0.95); }
+
+/* ─── Qty Control ─── */
+.z-qty-ctrl {
+  display: flex; align-items: center;
+  background: #C0392B; border-radius: 8px;
+  width: 96px; overflow: hidden;
+  box-shadow: 0 2px 10px rgba(192,57,43,0.3);
+}
+.z-qty-btn {
+  flex: 0 0 32px; height: 32px; border: none; background: transparent;
+  color: #fff; font-size: 1.1rem; font-weight: 700; cursor: pointer;
+  display: flex; align-items: center; justify-content: center;
+  transition: background 0.1s; -webkit-tap-highlight-color: transparent;
+}
+.z-qty-btn:hover  { background: rgba(0,0,0,0.12); }
+.z-qty-btn:active { background: rgba(0,0,0,0.22); }
+.z-qty-num {
+  flex: 1; text-align: center;
+  font-size: 0.9rem; font-weight: 800; color: #fff;
+}
+.z-qty-sm               { width: auto !important; min-width: 80px; }
+.z-qty-sm .z-qty-btn   { flex: 0 0 28px; height: 28px; font-size: 1rem; }
+.z-qty-sm .z-qty-num   { font-size: 0.85rem; }
+
+/* ─── No results ─── */
+.z-no-results {
+  text-align: center; padding: 3rem 1.5rem; background: #fff;
+  display: flex; flex-direction: column; align-items: center; gap: 0.5rem;
+}
+.z-no-results p { font-size: 0.88rem; color: #888; }
+
+/* ─── Floating Cart Bar ─── */
+.z-cart-fab {
+  position: fixed; bottom: 1.25rem; left: 50%;
+  transform: translateX(-50%);
+  width: min(calc(100% - 2rem), 520px);
+  background: #C0392B; border-radius: 14px;
+  padding: 0.9rem 1.25rem;
+  display: flex; align-items: center; justify-content: space-between;
+  gap: 0.5rem; cursor: pointer;
+  box-shadow: 0 8px 32px rgba(192,57,43,0.5); z-index: 1000; color: #fff;
+  animation: cfabIn 0.35s cubic-bezier(.17,.67,.34,1.4);
+  -webkit-tap-highlight-color: transparent; outline: none;
+  transition: box-shadow 0.2s;
+  border: none;
+}
+@keyframes cfabIn {
+  from { transform: translateX(-50%) translateY(80px); opacity: 0; }
+  to   { transform: translateX(-50%) translateY(0);    opacity: 1; }
+}
+.z-cart-fab:hover  { box-shadow: 0 12px 40px rgba(192,57,43,0.6); }
+.z-cart-fab:active { transform: translateX(-50%) scale(0.97); }
+.z-cfab-left  { display: flex; align-items: center; gap: 0.4rem; }
+.z-cfab-count {
+  background: rgba(255,255,255,0.25); border-radius: 6px;
+  width: 24px; height: 24px; display: flex;
+  align-items: center; justify-content: center;
+  font-size: 0.78rem; font-weight: 800;
+}
+.z-cfab-items  { font-size: 0.79rem; opacity: 0.88; }
+.z-cfab-center { font-size: 0.95rem; font-weight: 800; }
+.z-cfab-price  { font-size: 0.95rem; font-weight: 800; }
+
+/* ═══════════════════════════════════════
+   SUBPAGES: Cart / Checkout / Tracking
+   ═══════════════════════════════════════ */
+.z-subpage, .z-track-page {
+  background: #f4f4f4;
+  min-height: calc(100vh - var(--navbar-h));
+  padding-bottom: 5rem;
+}
+.z-subpage-header {
+  display: flex; align-items: center; gap: 0.75rem;
+  padding: 0.85rem 1rem; background: #fff;
+  border-bottom: 1px solid #efefef;
+  position: sticky; top: var(--navbar-h); z-index: 200;
+}
+.z-subpage-header h2 {
+  font-family: 'Playfair Display', serif;
+  font-size: 1.15rem; color: #1c1c1c;
+}
+.z-back-btn {
+  width: 36px; height: 36px; border-radius: 50%;
+  background: #f5f5f5; border: none;
+  display: flex; align-items: center; justify-content: center;
+  font-size: 1.15rem; cursor: pointer; color: #333; flex-shrink: 0;
+  transition: background 0.15s; -webkit-tap-highlight-color: transparent;
+}
+.z-back-btn:hover { background: #eaeaea; }
+
+/* ─── Restaurant chip ─── */
+.z-restaurant-chip {
+  display: flex; align-items: center; gap: 0.75rem;
+  padding: 0.9rem 1.25rem; background: #fff;
+  border-bottom: 8px solid #f4f4f4;
+  font-size: 1.3rem;
+}
+.z-rc-name { font-size: 0.93rem; font-weight: 700; color: #1c1c1c; }
+.z-rc-sub  { font-size: 0.71rem; color: #999; margin-top: 0.1rem; }
+
+/* ─── Cart Items ─── */
+.z-cart-block { background: #fff; margin-bottom: 8px; }
+.z-cart-row {
+  display: flex; align-items: center; gap: 0.75rem;
+  padding: 0.85rem 1.25rem; border-bottom: 1px solid #f9f9f9;
+}
+.z-cart-row-info { flex: 1; min-width: 0; }
+.z-cr-item-name { font-size: 0.88rem; font-weight: 700; color: #1c1c1c; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
+.z-cr-item-unit { font-size: 0.7rem; color: #aaa; margin-top: 0.1rem; }
+.z-cr-item-price { font-size: 0.9rem; font-weight: 700; color: #1c1c1c; white-space: nowrap; min-width: 44px; text-align: right; }
+
+/* ─── Bill ─── */
+.z-bill-block { background: #fff; padding: 1.25rem; margin-bottom: 8px; }
+.z-bill-header { font-size: 0.95rem; font-weight: 800; color: #1c1c1c; margin-bottom: 0.9rem; }
+.z-bill-line {
+  display: flex; justify-content: space-between; align-items: center;
+  padding: 0.35rem 0; font-size: 0.85rem; color: #555;
+}
+.z-bill-total-line { font-weight: 800; font-size: 1rem; color: #1c1c1c; }
+.z-bill-hr { border: none; border-top: 1px dashed #e8e8e8; margin: 0.6rem 0; }
+.z-free-tag { color: #27ae60; font-weight: 700; font-size: 0.82rem; }
+
+/* ─── Bottom action bar ─── */
+.z-bottom-action {
+  position: fixed; bottom: 0; left: 0; right: 0;
+  background: #C0392B; color: #fff;
+  display: flex; align-items: center; justify-content: space-between;
+  padding: 0.85rem 1.25rem;
+  box-shadow: 0 -4px 20px rgba(0,0,0,0.15); z-index: 500;
+}
+.z-ba-title { font-size: 0.88rem; font-weight: 700; }
+.z-ba-sub   { font-size: 0.7rem; opacity: 0.72; margin-top: 0.1rem; }
+.z-proceed-btn {
+  background: #fff; color: #C0392B; border: none; border-radius: 8px;
+  padding: 0.55rem 1.25rem; font-family: 'Poppins', sans-serif;
+  font-size: 0.88rem; font-weight: 800; cursor: pointer; white-space: nowrap;
+  transition: all 0.15s; -webkit-tap-highlight-color: transparent;
+}
+.z-proceed-btn:hover { background: #F5C842; }
+
+/* ─── Checkout ─── */
+.z-checkout-section { background: #fff; padding: 1.25rem; margin-bottom: 8px; }
+.z-cs-title { font-size: 0.95rem; font-weight: 800; color: #1c1c1c; margin-bottom: 0.9rem; }
+.z-addr-wrap {
+  position: relative;
+  border: 2px solid #d0d0d0; border-radius: 12px;
+  background: #fff; overflow: hidden;
+  transition: border-color 0.2s, box-shadow 0.2s;
+}
+.z-addr-wrap:focus-within {
+  border-color: #C0392B;
+  box-shadow: 0 0 0 3px rgba(192,57,43,0.1);
+}
+.z-textarea {
+  width: 100%; border: none; outline: none;
+  padding: 0.85rem 1rem; font-family: 'Poppins', sans-serif;
+  font-size: 0.87rem; color: #1c1c1c; resize: none;
+  background: transparent; line-height: 1.6;
+  box-sizing: border-box;
+}
+.z-textarea::placeholder { color: #b0b0b0; font-size: 0.83rem; }
+
+.z-pay-list { display: flex; flex-direction: column; gap: 0.5rem; }
+.z-pay-opt {
+  display: flex; align-items: center; gap: 0.75rem;
+  padding: 0.85rem 1rem; background: #fafafa;
+  border: 1.5px solid #eee; border-radius: 10px;
+  cursor: pointer; font-family: 'Poppins', sans-serif;
+  text-align: left; width: 100%; transition: all 0.15s;
+  -webkit-tap-highlight-color: transparent;
+}
+.z-pay-opt:hover { border-color: #FF6B35; background: #fff9f4; }
+.z-pay-opt.sel   { border-color: #C0392B; background: #fff5f5; box-shadow: 0 0 0 3px rgba(192,57,43,0.1); }
+.z-po-icon   { font-size: 1.25rem; flex-shrink: 0; }
+.z-po-label  { flex: 1; font-size: 0.87rem; font-weight: 600; color: #1c1c1c; }
+.z-po-badge  { font-size: 0.62rem; background: #e8f5e9; color: #2e7d32; border-radius: 4px; padding: 0.1rem 0.4rem; font-weight: 700; }
+.z-po-check  { color: #27ae60; font-weight: 800; opacity: 0; transition: opacity 0.15s; }
+.z-po-check.v { opacity: 1; }
+.z-warn-text { text-align: center; font-size: 0.8rem; color: #e67e22; font-weight: 600; margin-bottom: 0.6rem; }
+
+/* ─── Confirm Button ─── */
+.z-confirm-btn {
+  width: 100%; padding: 1rem; border: none; border-radius: 12px;
+  background: linear-gradient(135deg, #FF6B35, #C0392B);
+  color: #fff; font-family: 'Poppins', sans-serif;
+  font-size: 1rem; font-weight: 700; cursor: pointer;
+  box-shadow: 0 4px 20px rgba(192,57,43,0.3);
+  transition: all 0.2s; display: flex; align-items: center; justify-content: center; gap: 0.5rem;
+  -webkit-tap-highlight-color: transparent;
+}
+.z-confirm-btn:hover   { transform: translateY(-2px); box-shadow: 0 8px 30px rgba(192,57,43,0.42); }
+.z-confirm-btn:active  { transform: scale(0.98); }
+.z-confirm-btn:disabled { opacity: 0.5; cursor: not-allowed; transform: none !important; }
+
+/* ─── Empty pages ─── */
+.z-empty-page {
+  min-height: calc(100vh - var(--navbar-h));
+  display: flex; flex-direction: column; align-items: center;
+  justify-content: center; gap: 0.65rem; text-align: center;
+  padding: 2rem; background: #f4f4f4;
+}
+.z-empty-page h3 { font-family: 'Playfair Display', serif; font-size: 1.3rem; color: #333; }
+.z-empty-page p  { color: #999; font-size: 0.87rem; }
+
+/* ═══════════════════════════════════
+   LIVE ORDER TRACKING
+   ═══════════════════════════════════ */
+.z-track-page { background: #f4f4f4; }
+.z-track-header {
+  background: linear-gradient(135deg, #3d0000, #8B0000);
+  padding: 2.5rem 1.5rem 1.75rem; text-align: center; color: #fff;
+}
+.z-track-icon-wrap {
+  width: 72px; height: 72px; border-radius: 50%;
+  background: rgba(255,255,255,0.12); backdrop-filter: blur(8px);
+  border: 2px solid rgba(255,255,255,0.2);
+  display: flex; align-items: center; justify-content: center;
+  margin: 0 auto 0.75rem;
+}
+.z-track-shop { font-family: 'Playfair Display', serif; font-size: 1rem; color: #F5C842; font-weight: 700; margin-bottom: 0.2rem; }
+.z-track-oid  { font-size: 0.74rem; color: rgba(255,255,255,0.6); letter-spacing: 1px; }
+.z-track-live-badge {
+  display: inline-flex; align-items: center; gap: 0.35rem;
+  margin-top: 0.75rem; padding: 0.3rem 0.8rem;
+  background: rgba(255,255,255,0.14); border-radius: 50px;
+  font-size: 0.7rem; font-weight: 700; color: #fff;
+  animation: livePulse 2s ease-in-out infinite;
+}
+@keyframes livePulse { 0%,100% { opacity:1; } 50% { opacity:0.55; } }
+
+.z-track-card {
+  background: #fff; border-radius: 20px; margin: 1.25rem 1rem;
+  padding: 1.75rem 1.25rem;
+  box-shadow: 0 4px 24px rgba(0,0,0,0.08);
+}
+.z-track-status-title {
+  font-family: 'Playfair Display', serif;
+  font-size: 1.05rem; font-weight: 700; color: #1c1c1c;
+  text-align: center; margin-bottom: 1.75rem;
+}
+
+/* Stepper */
+.z-stepper { padding: 0; }
+.z-step {
+  display: flex; gap: 0.9rem; align-items: stretch;
+}
+.z-step-col {
+  display: flex; flex-direction: column; align-items: center;
+  flex-shrink: 0; width: 36px;
+}
+.z-step-dot {
+  width: 36px; height: 36px; border-radius: 50%;
+  border: 2px solid #e0e0e0; background: #fff;
+  display: flex; align-items: center; justify-content: center;
+  font-size: 0.95rem; color: #ccc; flex-shrink: 0;
+  transition: all 0.4s ease; z-index: 1;
+}
+.z-step.done .z-step-dot {
+  background: #27ae60; border-color: #27ae60; color: #fff;
+  font-size: 0.82rem; font-weight: 800;
+}
+.z-step.current .z-step-dot {
+  background: #C0392B; border-color: #C0392B; color: #fff;
+  box-shadow: 0 0 0 6px rgba(192,57,43,0.14);
+  animation: stepGlow 1.8s ease-in-out infinite;
+}
+@keyframes stepGlow {
+  0%,100% { box-shadow: 0 0 0 6px rgba(192,57,43,0.14); }
+  50%     { box-shadow: 0 0 0 12px rgba(192,57,43,0.05); }
+}
+.z-step-line {
+  flex: 1; width: 2px; background: #e8e8e8;
+  min-height: 24px; margin: 0 auto;
+  transition: background 0.4s ease;
+}
+.z-step-line.done { background: #27ae60; }
+.z-step-body {
+  flex: 1; padding: 0.4rem 0 1.1rem;
+}
+.z-step-label {
+  font-size: 0.9rem; font-weight: 700; color: #c5c5c5;
+  transition: color 0.3s;
+}
+.z-step.done .z-step-label,
+.z-step.current .z-step-label { color: #1c1c1c; }
+.z-step-sub {
+  font-size: 0.75rem; color: #888; margin-top: 0.2rem;
+  animation: fadeUp 0.4s ease;
+}
+
+.z-track-amount {
+  display: flex; justify-content: space-between; align-items: center;
+  padding-top: 1rem; margin-top: 0.5rem;
+  border-top: 1px solid #f5f5f5; font-size: 0.84rem; color: #555;
+}
+.z-track-note {
+  display: flex; align-items: center; justify-content: center;
+  gap: 0.5rem; font-size: 0.75rem; color: #aaa;
+  padding: 0.75rem 1rem; text-align: center;
+}
+.z-live-dot {
+  width: 8px; height: 8px; border-radius: 50%; background: #e74c3c;
+  animation: liveDot 1s ease-in-out infinite; flex-shrink: 0;
+}
+@keyframes liveDot { 0%,100% { opacity:1; transform:scale(1); } 50% { opacity:0.4; transform:scale(0.7); } }
+
+/* Delivered celebration */
+.z-delivered-anim {
+  text-align: center; padding: 1.25rem 0;
+  animation: popIn 0.5s cubic-bezier(.17,.67,.34,1.4);
+}
+@keyframes popIn { from { transform:scale(0.5); opacity:0; } to { transform:scale(1); opacity:1; } }
+
+/* ═══════════════════════════════
+   CUSTOMER LOGIN — ZOMATO STYLE
+   ═══════════════════════════════ */
+.zl-page {
+  min-height: calc(100vh - var(--navbar-h));
+  background: linear-gradient(175deg, #3d0000 0%, #8B0000 35%, #f4f4f4 55%);
+  display: flex; flex-direction: column; align-items: center;
+  padding: 0 1rem 2.5rem; font-family: 'Poppins', sans-serif;
+}
+.zl-brand {
+  text-align: center; padding: 2.5rem 1rem 1.75rem; color: #fff;
+}
+.zl-brand-emoji {
+  font-size: 3.5rem; display: block; margin-bottom: 0.5rem;
+  filter: drop-shadow(0 4px 16px rgba(0,0,0,0.3));
+}
+.zl-brand-name {
+  font-family: 'Playfair Display', serif;
+  font-size: clamp(1.3rem, 5vw, 1.9rem); font-weight: 900;
+  color: #F5C842; line-height: 1.2; margin-bottom: 0.45rem;
+}
+.zl-brand-tag { font-size: 0.8rem; color: rgba(255,255,255,0.68); letter-spacing: 0.5px; }
+
+.zl-card {
+  background: #fff; border-radius: 20px;
+  width: 100%; max-width: 430px;
+  padding: 2rem 1.75rem 1.75rem;
+  box-shadow: 0 20px 60px rgba(0,0,0,0.22);
+  border: 1px solid rgba(0,0,0,0.04);
+}
+.zl-card-title {
+  font-size: 1.05rem; font-weight: 700; color: #1c1c1c;
+  margin-bottom: 1.25rem; text-align: center;
+}
+.zl-tabs {
+  display: flex; background: #f5f5f5; border-radius: 10px;
+  padding: 4px; margin-bottom: 1.25rem; gap: 4px;
+}
+.zl-tab {
+  flex: 1; padding: 0.6rem; border: none; border-radius: 8px;
+  font-family: 'Poppins', sans-serif; font-size: 0.88rem; font-weight: 600;
+  cursor: pointer; transition: all 0.2s; background: transparent; color: #888;
+  -webkit-tap-highlight-color: transparent;
+}
+.zl-tab.active { background: #fff; color: #C0392B; box-shadow: 0 2px 8px rgba(0,0,0,0.1); }
+.zl-form { display: flex; flex-direction: column; gap: 1rem; }
+.zl-field { display: flex; flex-direction: column; gap: 0.35rem; }
+.zl-label { font-size: 0.71rem; font-weight: 700; color: #555; text-transform: uppercase; letter-spacing: 0.5px; }
+.zl-input-wrap {
+  display: flex; align-items: center; gap: 0.5rem;
+  border: 1.5px solid #eee; border-radius: 10px;
+  padding: 0 0.9rem; background: #fafafa;
+  transition: border-color 0.2s, box-shadow 0.2s, background 0.2s;
+}
+.zl-input-wrap:focus-within {
+  border-color: #C0392B; background: #fff;
+  box-shadow: 0 0 0 3px rgba(192,57,43,0.1);
+}
+.zl-input-icon { font-size: 1rem; color: #ccc; flex-shrink: 0; }
+.zl-input {
+  flex: 1; border: none; outline: none; background: transparent;
+  font-family: 'Poppins', sans-serif; font-size: 0.9rem; color: #1c1c1c;
+  padding: 0.74rem 0;
+}
+.zl-error {
+  background: #fee2e2; border-left: 3px solid #C0392B;
+  border-radius: 8px; padding: 0.6rem 0.9rem;
+  font-size: 0.8rem; color: #C0392B; font-weight: 600;
+  display: flex; align-items: center; gap: 0.4rem;
+}
+.zl-submit-btn {
+  width: 100%; padding: 0.9rem; border: none; border-radius: 12px;
+  background: linear-gradient(135deg, #FF6B35, #C0392B);
+  color: #fff; font-family: 'Poppins', sans-serif;
+  font-size: 1rem; font-weight: 700; cursor: pointer;
+  box-shadow: 0 4px 20px rgba(192,57,43,0.32);
+  transition: all 0.2s; margin-top: 0.25rem;
+  -webkit-tap-highlight-color: transparent;
+}
+.zl-submit-btn:hover   { transform: translateY(-2px); box-shadow: 0 8px 30px rgba(192,57,43,0.42); }
+.zl-submit-btn:active  { transform: scale(0.98); }
+.zl-submit-btn:disabled { opacity: 0.58; cursor: not-allowed; transform: none; }
+.zl-switch { text-align: center; font-size: 0.8rem; color: #888; margin-top: 1.25rem; }
+.zl-switch-btn {
+  background: none; border: none; color: #C0392B; font-weight: 700;
+  cursor: pointer; font-family: 'Poppins', sans-serif; font-size: 0.8rem; padding: 0;
+}
+.zl-switch-btn:hover { text-decoration: underline; }
+
+/* ─── Responsive ─── */
+@media (max-width: 600px) {
+  .z-banner-content     { padding: 1.5rem 1rem 0.5rem; }
+  .z-banner-info-row    { padding: 0.6rem 1rem 0.75rem; gap: 0.75rem; }
+  .z-menu-item          { padding: 0.9rem 1rem; gap: 0.65rem; }
+  .z-item-img           { width: 82px; height: 66px; border-radius: 8px; }
+  .z-add-btn            { width: 82px; font-size: 0.78rem; }
+  .z-qty-ctrl           { width: 82px; }
+  .z-track-header       { padding: 2rem 1rem 1.5rem; }
+  .z-track-card         { margin: 1rem 0.75rem; padding: 1.25rem 1rem; }
+  .zl-card              { padding: 1.75rem 1.25rem 1.5rem; }
+}
+@media (max-width: 400px) {
+  .z-item-img  { width: 70px; height: 56px; }
+  .z-add-btn   { width: 70px; font-size: 0.74rem; }
+  .z-qty-ctrl  { width: 70px; }
+  .z-qty-btn   { flex: 0 0 26px; height: 26px; }
+  .z-cart-fab  { border-radius: 10px; }
+  .z-banner-name { font-size: 1.15rem; }
+  .z-info-chip { padding: 0.45rem 0.65rem; min-width: 56px; }
+}

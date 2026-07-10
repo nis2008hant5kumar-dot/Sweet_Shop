@@ -1494,3 +1494,109 @@ tbody tr.selected-row {
   .order-card-foot, .order-actions { padding-left: 0.85rem; padding-right: 0.85rem; }
 }
 
+/* ================================================================
+   RESPONSIVE IMPROVEMENTS — FAST & MOBILE-FIRST
+   ================================================================ */
+
+/* ── Touch targets: all interactive elements ── */
+button, a, [role="button"] {
+  -webkit-tap-highlight-color: transparent;
+  touch-action: manipulation;
+}
+
+/* ── Navbar: shrink gracefully on very small screens ── */
+@media (max-width: 480px) {
+  .navbar {
+    flex-wrap: wrap;
+    height: auto;
+    min-height: 56px;
+    padding: 0.5rem 0.75rem;
+    gap: 0.4rem;
+  }
+  :root { --navbar-h: 56px; }
+  .nav-brand { flex: 1 1 auto; }
+  .nav-brand-main { font-size: 0.75rem; }
+  .nav-brand-sub  { font-size: 0.52rem; letter-spacing: 0.8px; }
+  .nav-links { flex-wrap: wrap; gap: 0.2rem; }
+  .nav-link  { padding: 0.35rem 0.5rem; font-size: 0.7rem; }
+  .nav-customer-name { font-size: 0.7rem; padding: 0.25rem 0.5rem; max-width: 90px; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
+}
+
+/* ── Dashboard nav tabs scroll smoothly ── */
+.dash-nav {
+  scrollbar-width: none;
+  -ms-overflow-style: none;
+}
+.dash-nav::-webkit-scrollbar { display: none; }
+
+@media (max-width: 480px) {
+  .dash-nav { top: 56px; }
+  .dash-tab  { padding: 0.75rem 0.65rem; font-size: 0.72rem; }
+}
+
+/* ── Order cards: better mobile layout ── */
+@media (max-width: 520px) {
+  .order-card-head {
+    flex-wrap: wrap;
+    gap: 0.3rem;
+  }
+  .order-id-block { flex: 1 1 auto; }
+  .order-time     { font-size: 0.7rem; }
+  .order-customer { gap: 0.5rem; flex-direction: column; }
+  .order-actions  { gap: 0.4rem; }
+  .order-actions .btn-sm { flex: 1 1 auto; justify-content: center; }
+  .ot-amount { font-size: 1rem; }
+}
+
+/* ── Stat grid: 2 columns on phones ── */
+@media (max-width: 400px) {
+  .stat-grid { grid-template-columns: 1fr 1fr; }
+  .stat-val  { font-size: 1.05rem; }
+}
+
+/* ── Form inputs: larger tap targets on mobile ── */
+@media (max-width: 600px) {
+  .form-input, .form-select {
+    min-height: 44px;
+    font-size: 1rem;
+  }
+  .btn { min-height: 42px; }
+  .btn-sm { min-height: 34px; }
+}
+
+/* ── Checkout modal: full width on small phones ── */
+@media (max-width: 400px) {
+  .checkout-modal { padding: 1rem 0.85rem 1.25rem; }
+  .payment-options { grid-template-columns: 1fr; gap: 0.5rem; }
+  .payment-option  { padding: 0.6rem 0.75rem; }
+}
+
+/* ── CustomerShop product grid ── */
+@media (max-width: 480px) {
+  .products-grid { grid-template-columns: 1fr; gap: 1rem; }
+  .product-img-wrap { height: 160px; }
+  .product-info { padding: 0.9rem; }
+  .product-name { font-size: 1.05rem; }
+}
+
+/* ── Cart FAB: full-width on smallest screens ── */
+@media (max-width: 380px) {
+  .cart-fab {
+    left: 0.75rem;
+    right: 0.75rem;
+    transform: none;
+    width: calc(100% - 1.5rem);
+    border-radius: 14px;
+    justify-content: center;
+  }
+  .cart-fab:hover { transform: none; }
+}
+
+/* ── Smooth image rendering ── */
+img { image-rendering: -webkit-optimize-contrast; }
+
+/* ── Prevent layout shift on iOS date inputs ── */
+input[type="date"], input[type="month"] {
+  -webkit-appearance: none;
+  appearance: none;
+}

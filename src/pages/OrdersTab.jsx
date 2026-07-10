@@ -1,5 +1,5 @@
 import { useState, useEffect, useCallback } from 'react';
-import { DB } from '../utils.js';
+import { DB, today, fmt } from '../utils.js';
 
 const STATUS_LABELS = {
   pending:    { label: '🕐 Pending',    cls: 'status-pending' },
@@ -30,7 +30,7 @@ function timeSince(iso) {
   return `${Math.floor(diff/3600)}h ago`;
 }
 
-export default function OrdersTab() {
+export default function OrdersTab({ showToast }) {
   const [orders, setOrders] = useState([]);
   const [filter, setFilter] = useState('all'); // 'all' | 'pending' | 'preparing' | 'ready' | 'delivered'
 
@@ -52,8 +52,35 @@ export default function OrdersTab() {
     return () => window.removeEventListener('shreeRamNewOrder', loadOrders);
   }, [loadOrders]);
 
+  /* Auto-save order total to Daily Sales when delivered */
+  function saveOrderToSales(order) {
+    const dateKey = today();
+    const note    = `Order #${String(Math.floor(order.id)).slice(-6)} — ${order.customerName}`;
+    const allSales = DB.get('sales');
+    const existing = allSales.find(r => r.date === dateKey && r.orderId === order.id);
+    if (existing) return; // already saved (guard against double-click)
+
+    DB.push('sales', {
+      date:    dateKey,
+      earning: order.total,
+      note,
+      orderId: order.id,         // tag so we can de-dup
+      source:  'order',
+    });
+
+    if (showToast) showToast(`💰 ${fmt(order.total)} auto-saved to Daily Sales!`, 'ok');
+  }
+
   function updateStatus(id, newStatus) {
+    // Find the order before updating so we can read its data
+    const order = DB.get('orders').find(o => o.id === id);
     DB.update('orders', id, { status: newStatus });
+
+    // When delivered → auto-save to sales
+    if (newStatus === 'delivered' && order) {
+      saveOrderToSales(order);
+    }
+
     loadOrders();
   }
 
